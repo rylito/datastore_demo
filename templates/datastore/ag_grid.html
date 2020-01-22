@@ -1,0 +1,83 @@
+{% extends "datastore/base.html" %}
+{% block content %}
+{% load static %}
+
+
+<link rel="stylesheet" href="{% static 'ta_compare_index/css/ag-grid.css' %}">
+<link rel="stylesheet" href="{% static 'ta_compare_index/css/ag-theme-balham.css' %}">
+<link rel="stylesheet" href="{% static 'ta_compare_index/css/ta_compare.css' %}">
+
+<script src="{% static 'ta_compare_index/js/ag-grid-community.min.noStyle.js' %}"></script>
+
+<script src="{% static 'js/tag_utils.js' %}"></script>
+<script src="{% static 'js/data_store.js' %}"></script>
+
+<script src="{% static 'ta_compare_index/js/overview_table.js' %}"></script>
+<script src="{% static 'ta_compare_index/js/color_gradient.js' %}"></script>
+<script src="{% static 'ta_compare_index/js/column_comparator.js' %}"></script>
+<script src="{% static 'ta_compare_index/js/external_filter.js' %}"></script>
+<script src="{% static 'ta_compare_index/js/set_filter.js' %}"></script>
+<script src="{% static 'ta_compare_index/js/ta_results_grid.js' %}"></script>
+
+<link rel="stylesheet" href="{% static 'css/select/select2.min.css' %}">
+<script src="{% static 'js/select/select2.min.js' %}"></script>
+
+
+<script>
+var API_URL = '{{ api_url }}';
+var API_PARAMS = {'baselines':[]};
+var FULL_VIEW_LINK = '';
+
+$(function(){
+    $.getJSON(API_URL, API_PARAMS)
+    .done(function(data, status_msg, jq_xhr) {
+
+        var ds = new DataStore(data)
+
+
+        var baseline_order = ds.select('BASELINE').only(['name','pk']).as_list()
+
+        var column_comparator = new ColumnComparator(baseline_order)
+
+        var overview_table = new OverviewTable('#overview_table_container', baseline_order, ds, FULL_VIEW_LINK)
+        var color_gradient = new ColorGradient('#color_legend')
+
+        var external_filter = new ExternalFilter('#external_filter_container', column_comparator) //renders inside overview_table
+        var ta_results_grid = new TAResultsGrid('#ta_results_grid_container', baseline_order, ds, color_gradient, overview_table, column_comparator)
+
+        ta_results_grid.register_external_filter(external_filter)
+        overview_table.register_reset_handler(ta_results_grid.reset_filters)
+        overview_table.register_csv_handler(ta_results_grid.download_csv)
+        overview_table.register_col_select_handler(ta_results_grid.select_col)
+
+    })
+    .fail(function(){
+        alert('AJAX request failed')
+    })
+    .always(function(){
+        $('#loading').hide()
+    })
+
+})
+
+</script>
+
+
+<center>
+<h2><strong>Datastore Demo</strong></h2>
+</center>
+
+
+<div id="color_legend"></div>
+
+<div id="overview_table_container" style="width: 100%;"></div>
+
+<div id="ta_results_grid_container" style="width: 100%; clear: both;" class="ag-theme-balham"></div>
+
+
+
+
+{% endblock %}
+
+
+

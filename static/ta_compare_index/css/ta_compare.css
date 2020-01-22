@@ -1,0 +1,124 @@
+/* styles for overview table */
+
+div.overview-col, div.row-header-col, div.row-header-col-color-map{
+    position: relative;
+    float: left;
+}
+
+div.overview-viewport{
+    position: relative;
+}
+
+div.overview-col div, div.row-header-col div {
+    border: solid 1px black;
+    padding: 5px;
+}
+
+div.overview-baseline-header{
+    /* https://stackoverflow.com/questions/499137/css-how-can-i-force-a-long-string-without-any-blank-to-be-wrapped-in-xul-and */
+    white-space: -moz-pre-wrap; /* Mozilla */
+    white-space: -hp-pre-wrap; /* HP printers */
+    white-space: -o-pre-wrap; /* Opera 7 */
+    white-space: -pre-wrap; /* Opera 4-6 */
+    white-space: pre-wrap; /* CSS 2.1 */
+    white-space: pre-line; /* CSS 3 (and 2.1 as well, actually) */
+    word-wrap: break-word; /* IE */
+    word-break: break-all;
+
+    font-weight: bold;
+    text-align: center;
+}
+
+div.row-header-col{
+    font-weight: bold;
+    background-color: #efefed;
+}
+
+div.overview-col div{
+    font-weight: bold;
+}
+
+div.status{
+    font-weight: bold;
+}
+div.bg-red{
+    background-color: red;
+    color: white;
+}
+div.bg-green{
+    background-color: green;
+    color: white;
+}
+
+div.filter-button-container button, div.filter-button-container a{
+    margin: 0 5px;
+}
+
+div.filter-button-container li{
+    font-weight: normal;
+}
+
+/* styles for grid */
+
+.cell-hl-change-worse{
+    background-color: red;
+}
+.cell-hl-change-better{
+    background-color: lightgreen;
+}
+.cell-hl-change-noval{
+    background-color: #ddfdff;
+}
+
+/* ag grid theme overrides */
+
+.ag-cell, .ag-header-cell-text{
+    font-size: 16px;
+    color: #000000;
+}
+
+.ag-body-viewport.ag-layout-auto-height{
+    overflow: hidden !important; /* hack to hide vertical scrollbar when using domLayout: autoHeight */
+}
+
+/* styles for color map */
+
+#color_legend h3{
+    text-align: center;
+}
+
+ul.color-map{
+    list-style: none;
+    xmargin-right: 10px;
+    text-align: center;
+}
+
+ul.color-map li{
+    padding: 5px;
+    text-align: center;
+    display: inline-block;
+    width: 50px;
+    margin: 0 1px;
+    font-weight: bold;
+}
+
+ul.color-map li:after{
+    content: '%'
+}
+
+/* loading div */
+
+#loading{
+    background-image: url('../../js/spinner.gif');
+    background-repeat: no-repeat;
+    background-position: center;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    z-index: 5000;
+    top: 0;
+    left: 0;
+    float: left;
+    text-align: center;
+    padding-top: 25%;
+}
